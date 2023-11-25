@@ -43,7 +43,7 @@ const TaskListContainer = () => {
 		<h2>Cargando...</h2>
 	) : (
 		<main>
-			<Filter>
+			<Filter filterDefault="all">
 				{(filterState, handleFilterChange) => (
 					<>
 						<Dropdown
