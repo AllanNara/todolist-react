@@ -1,22 +1,20 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import TaskListContainer from './containers/TaskListContainer';
-import Login from "./containers/Login";
-import Home from "./components/Home";
-import NavBar from "./components/NavBar";
+import { BrowserRouter } from "react-router-dom";
+import AppRouter from "./containers/AppRouter";
+import { FirestoreProvider } from "./context/firestoreContext";
+import { AuthProvider } from "./context/authContext";
 
-function App() {
-  return (
-    <div className="container">
-      <BrowserRouter>
-        <NavBar />
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/tasks" element={<TaskListContainer />} />
-          <Route exact path="/login" element={<Login />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
-  )
-}
+const App = () => {
+	return (
+		<div className="container">
+			<BrowserRouter>
+				<AuthProvider>
+					<FirestoreProvider>
+						<AppRouter />
+					</FirestoreProvider>
+				</AuthProvider>
+			</BrowserRouter>
+		</div>
+	);
+};
 
-export default App
+export default App;
