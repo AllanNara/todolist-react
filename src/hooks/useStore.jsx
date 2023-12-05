@@ -1,13 +1,13 @@
-import { useContext } from "react"
-import { FirestoreContext } from "../context/firestoreContext"
+import { useContext } from "react";
+import { StoreContext } from "../context/storeContext";
 
 const useStore = () => {
-  const store = useContext(FirestoreContext);
-  if(!store) {
-    throw new Error("useStore debe ser utilizado dentro de un FirestoreProvider")
-  }
+	const store = useContext(StoreContext);
+	if (!Object.keys(store).length) {
+		throw new Error("'useStore' debe ser utilizado dentro de un 'StoreProvider'");
+	}
 
-  return store
-}
+	return store;
+};
 
-export default useStore
+export default useStore;

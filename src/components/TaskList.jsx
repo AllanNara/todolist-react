@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import Task from "./Task";
 
-const TaskList = ({ tasks, handleChangeState, handleChangePriority }) => {
+const TaskList = ({ tasks, handleChangeState, handleChangePriority, optionsPriority }) => {
 	if (!tasks.length) {
 		return <h2>No hay tareas existentes</h2>;
 	}
@@ -16,6 +16,7 @@ const TaskList = ({ tasks, handleChangeState, handleChangePriority }) => {
 							key={task.id}
 							onCompleted={handleChangeState}
 							changePriority={handleChangePriority}
+							optionsPriority={optionsPriority}
 						/>
 					);
 				})}
@@ -28,6 +29,7 @@ TaskList.propTypes = {
 	tasks: PropTypes.array.isRequired,
 	handleChangeState: PropTypes.func.isRequired,
 	handleChangePriority: PropTypes.func.isRequired,
+	optionsPriority: PropTypes.array
 };
 
 export default TaskList;

@@ -1,35 +1,34 @@
-import { useEffect, useState } from "react";
 import TaskList from "../components/TaskList";
-import fetchTasks from "../utils/fake-data";
 import Dropdown from "../components/Dropdown";
 import Filter from "./Filter";
+import { updateTask } from "../services/task";
+import useStore from "../hooks/useStore";
+import { Link } from "react-router-dom";
 
 const TaskListContainer = () => {
-	const [tasks, setTasks] = useState([]);
-	const [loading, setLoading] = useState(false);
+	const { tasks, priorities, loading, setTasks } = useStore();
 
-	useEffect(() => {
-		setLoading(true);
-		fetchTasks("success")
-			.then((result) => setTasks(result))
-			.catch((err) => console.log("Ocurrio un error!\n", err))
-			.finally(() => setLoading(false));
-	}, []);
-
-	const handleChangeState = (id) => {
+	const handleChangeState = async (id) => {
 		const updatedTasks = tasks.map((task) => {
-			if (task.id === id) return { ...task, completed: !task.completed };
-			else return task;
+			if (task.id === id) {
+				let updated = !task.completed;
+				updateTask(id, { completed: updated });
+				return { ...task, completed: updated };
+			} else return task;
 		});
 
 		setTasks(updatedTasks);
 	};
 
 	const handleChangePriority = (id, value) => {
+		updateTask(id, { priority: value });
+
 		const updatedTasks = tasks.map((task) => {
-			if (task.id === id) return { ...task, priority: value };
-			else return task;
+			if (task.id === id) {
+				return { ...task, priority: value };
+			} else return task;
 		});
+
 		setTasks(updatedTasks);
 	};
 
@@ -43,6 +42,7 @@ const TaskListContainer = () => {
 		<h2>Cargando...</h2>
 	) : (
 		<main>
+
 			<Filter filterDefault="all">
 				{(filterState, handleFilterChange) => (
 					<>
@@ -55,16 +55,20 @@ const TaskListContainer = () => {
 						<TaskList
 							tasks={
 								filterState === "all"
-								? tasks
-								: tasks.filter((task) =>
-									filterState === "complete" ? task.completed : !task.completed
-								)
+									? tasks
+									: tasks.filter((task) =>
+											filterState === "complete" ? task.completed : !task.completed
+										)
 							}
+							optionsPriority={priorities}
 							{...{ handleChangeState, handleChangePriority }}
 						/>
 					</>
 				)}
 			</Filter>
+			<Link to={"/tasks/create"}>
+				<button style={{position: "absolute", bottom: 25, right: 25, padding: 10, backgroundColor: "#bbb"}}>¡Crear una nueva tarea!</button>
+			</Link>
 		</main>
 	);
 };

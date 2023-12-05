@@ -2,12 +2,12 @@ import { useContext } from "react";
 import { AuthContext } from "../context/authContext";
 
 const useAuth = () => {
-  const context = useContext(AuthContext);
-  if(!context) {
+  const auth = useContext(AuthContext);
+  if(!Object.keys(auth).length) {
     throw new Error('useAuth debe ser utilizado dentro de un CartProvider');
   }
 
-  return context
+  return auth
 }
 
 export default useAuth

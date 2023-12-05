@@ -1,5 +1,6 @@
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import PropTypes from 'prop-types'
+import { StoreProvider } from "../context/storeContext";
 
 const ProtectedRoute = ({ user, children, redirectTo = "/" }) => {
   const location = useLocation();
@@ -8,7 +9,11 @@ const ProtectedRoute = ({ user, children, redirectTo = "/" }) => {
     return <Navigate to={redirectTo} state={{from: location}} replace/>
   }
 
-  return children ? children : <Outlet />
+  return (
+    <StoreProvider user={user}>
+      {children ? children : (<Outlet />)}
+    </StoreProvider>
+  )
 };
 
 ProtectedRoute.propTypes = {

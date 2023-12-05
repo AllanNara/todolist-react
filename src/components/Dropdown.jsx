@@ -22,7 +22,7 @@ const Dropdown = ({ name = "options", options, onSelect, defaultValue }) => {
 Dropdown.propTypes = {
 	name: PropTypes.string,
 	onSelect: PropTypes.func,
-	defaultValue: PropTypes.string,
+	defaultValue: PropTypes.any,
 	options: PropTypes.array.isRequired,
 };
 

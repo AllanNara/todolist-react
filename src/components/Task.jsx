@@ -1,23 +1,23 @@
 import PropTypes from "prop-types";
 import Dropdown from "./Dropdown";
 
-const Task = ({ item, onCompleted, changePriority }) => {
-	const optionsPriority = [
-		{ id: 1, value: "1", name: "Urgente" },
-		{ id: 2, value: "2", name: "Normal" },
-		{ id: 3, value: "3", name: "Baja" },
-	];
-
+const Task = ({ item, onCompleted, changePriority, optionsPriority }) => {
 	const handleOnSelect = (value) => {
-		changePriority(item.id, value);
+		changePriority(item.id, parseInt(value));
 	};
 
+	const handleChangeOnComplete = (e) => {
+		onCompleted(item.id); 
+		e.target.checked = !item.completed
+	}
+
 	return (
-		<li>
+		<li style={{width: "35%", border: "solid 1px #000", padding: "0 30px"}}>
 			<p style={{ textDecoration: item.completed ? "line-through" : "none" }}>
 				Tarea: {item.text}
 			</p>
-			<p>Estado: {item.completed ? "Completado" : "Incompleto"}</p>
+			<span>Estado: {item.completed ? "Completado" : "Incompleto"}</span> 
+			<input type="checkbox" checked={item.completed} onChange={handleChangeOnComplete}></input>
 			<p>
 				<span>Prioridad: </span>
 				<Dropdown
@@ -27,7 +27,7 @@ const Task = ({ item, onCompleted, changePriority }) => {
 					defaultValue={item.priority}
 				/>
 			</p>
-			<input type="checkbox" onClick={() => onCompleted(item.id)}></input>
+			
 		</li>
 	);
 };
@@ -36,6 +36,7 @@ Task.propTypes = {
 	item: PropTypes.object.isRequired,
 	onCompleted: PropTypes.func.isRequired,
 	changePriority: PropTypes.func.isRequired,
+	optionsPriority: PropTypes.array.isRequired
 };
 
 export default Task;
